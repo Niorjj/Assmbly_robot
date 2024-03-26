@@ -1,0 +1,9 @@
+assembly_robot\system_stm32f10x.o: RTE\Device\STM32F103C8\system_stm32f10x.c
+assembly_robot\system_stm32f10x.o: D:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include\stm32f10x.h
+assembly_robot\system_stm32f10x.o: .\RTE\_Assembly_robot\RTE_Components.h
+assembly_robot\system_stm32f10x.o: ../Drivers/CMSIS/Include/core_cm3.h
+assembly_robot\system_stm32f10x.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+assembly_robot\system_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_version.h
+assembly_robot\system_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+assembly_robot\system_stm32f10x.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+assembly_robot\system_stm32f10x.o: D:\keil5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include\system_stm32f10x.h
