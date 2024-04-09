@@ -122,6 +122,18 @@ vim + doc_name
 2. 求解各电机转动的角度[bilibili视频](https://www.bilibili.com/video/BV1Vh411j7HW/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
 
 
+
+#### 用到的软件及网站
+1. stm32cubemx
+2. vscode
+3. github 
+4. git
+5. keil5
+6. solidworks
+7. AltiumDesigner
+
+
+
 #### 目前主要需要攻克的问题
 1. 定时器控制4个电机输出不同pwm接线和方案（各引脚的分配）
 2. 材料BOM表
@@ -133,11 +145,9 @@ vim + doc_name
 8. 相机标定确定需要传回的参数
 9. 树莓派摄像头发红
 
-
 后续正在补充ing....
 
 <<<<<<< HEAD
 ### 
 =======
 #### 
-
