@@ -41,7 +41,8 @@
   - 其他零件
   - DOBOT模型
 - 电气结构
-  - 电源模块（ACDC/DCDC）
+  - 电源降压电路（DCDC）
+  - 电机驱动电路
   - 主控模块
   - 通信模块
   - 视觉传感器
@@ -121,6 +122,10 @@ vim + doc_name
 1. 确定目标位置
 2. 求解各电机转动的角度[bilibili视频](https://www.bilibili.com/video/BV1Vh411j7HW/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
 
+#### 颜色识别
+1. 转换为HSL格式的图像，选中白色为检测的颜色
+2. H=[1,179],L=[0,255],S=[0,255]
+3. 
 
 #### 目前主要需要攻克的问题
 1. 定时器控制4个电机输出不同pwm接线和方案（各引脚的分配）
@@ -130,12 +135,28 @@ vim + doc_name
 5. 机械臂外观设计[参照这个视频](https://www.bilibili.com/video/BV16x411R7kQ/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
 6. 树莓派摄像头生成图片后对图片进行实施处理
 7. 树莓派开机自动执行程序
+mystart.service文件
 8. 相机标定确定需要传回的参数
-9. 树莓派摄像头发红
+
+#### 工作流程
+1. 相机识别当前位置，回归初始位置
+2. 相机标定目标物体的位置
+3. 接收x,y,h,r将其中心点对应于机械爪中心
+4. 通过位姿分析转换为电机1，2，3，4分别的转动角度（添加pid调节使其快速响应）
+5. 添加卡尔曼滤波来减小误差（后期进行）
+
+#### 变量定义
+- 物体x轴坐标位置*x*
+- 物体y轴坐标位置*y*
+- 物体与相机距离*h*
+- 相机与物体的偏转角度*r*
+- 底部平移电机的转动角度*j1*
+- 底部旋转电机的转动角度*j2*
+- 大臂电机的转动角度*j3*
+- 小臂电机的转动角度*j4*
 
 
 后续正在补充ing....
-
 <<<<<<< HEAD
 ### 
 =======

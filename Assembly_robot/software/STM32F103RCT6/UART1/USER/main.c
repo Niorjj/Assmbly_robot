@@ -8,7 +8,8 @@ int main(void)
 	USART1_Init(); //调用串口1初始化函数
 	while(1)
 	{
-		USART1_Send_Byte("1");
+		USART1_Send_Byte(1);
+		delay_ms(100);
 	  //本次例程无主函数，用户可自定义
 	}
 }
