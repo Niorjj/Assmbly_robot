@@ -79,32 +79,6 @@
 12. 投放到指定位置
 
 
-
-#### 树莓派使用
-1. 连接type-c电源线（系统都已经烧录好，无需再烧录）
-2. ssh连接 
-   1. 更新ssh固件/下载finalshell
-   2. 连接无线网络（可以手机或电脑开启热点）
-   3. ssh远程连接命令（在cmd或者finalshell中设置好用户名和IP地址
-```C
-ssh xue@192.168.137.109//ip地址有可能会变化，具体通过在windows中使用ipconfig命令确定
-password：123456
-```
-   4. 使用VNC连接远程桌面
-3. 连接usb摄像头 
-```C
-sudo motion //启动摄像头 
-```
-4. 浏览器输入http://192.168.137.109:8080
-5. 选择文件路径
-```C
-cd /home/Assembly_robot
-```
-6. 写入Python文件使用
-```C
-vim + doc_name
-```
-
 #### 树莓派通信
 1. 确定帧头和帧尾（开头两位为帧头，中间最多5位为数据帧，最后一位为帧尾）
 2. 树莓派已经打开串口通信，需要使用时用"/dev/AttyS0"
@@ -112,15 +86,12 @@ vim + doc_name
 
 #### 外设资源分配
 1. 共控制四个电机（1个控制底座旋转，1个控制底座平移，两个控制手臂上下移动）
-   1. 需要用到几个定时器（暂未确定）
-   2. 控制方向引脚未确定
 2. 使用USART1串口与树莓派连接
 
 
 #### 机械臂逆运动学求解
 1. 确定目标位置
 2. 求解各电机转动的角度[bilibili视频](https://www.bilibili.com/video/BV1Vh411j7HW/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
-
 
 
 #### 用到的软件及网站
@@ -133,17 +104,13 @@ vim + doc_name
 7. AltiumDesigner
 
 
-
 #### 目前主要需要攻克的问题
-1. 定时器控制4个电机输出不同pwm接线和方案（各引脚的分配）
-2. 材料BOM表
-3. 直线模组的主要零件
-4. 树莓派与stm32通信问题
-5. 机械臂外观设计[参照这个视频](https://www.bilibili.com/video/BV16x411R7kQ/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
-6. 树莓派摄像头生成图片后对图片进行实施处理
-7. 树莓派开机自动执行程序
-8. 相机标定确定需要传回的参数
-9. 树莓派摄像头发红
+1. 材料BOM表
+2. 直线模组的主要零件
+3. 树莓派与stm32通信问题
+4. 机械臂外观设计[参照这个视频](https://www.bilibili.com/video/BV16x411R7kQ/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=6c8c6daa163c1df4bfba8b5eb38390b1)
+5. 树莓派摄像头生成图片后对图片进行实施处理
+6. 相机标定确定需要传回的参数
 
 后续正在补充ing....
 
