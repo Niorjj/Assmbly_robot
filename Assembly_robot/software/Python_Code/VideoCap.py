@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+#检测目标的轮廓并判断形状
 def detect_objects(frame):
     # 转换图像为HSV颜色空间
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -20,14 +21,16 @@ def detect_objects(frame):
     kernel = np.ones((5, 5), np.uint8)
     red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_OPEN, kernel)
     blue_mask = cv2.morphologyEx(blue_mask, cv2.MORPH_OPEN, kernel)
-
+    # 转换图像为灰度
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # 寻找轮廓
     contours, _ = cv2.findContours(red_mask + blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # 使用Canny边缘检测算法检测边缘
+    edges = cv2.Canny(gray, 50, 150)
 
-    detected_objects = []
-
+#判断目标的形状
 def detect_shape(frame):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -54,9 +57,8 @@ def detect_shape(frame):
 
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture(0)
 # 打开摄像头
-cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(0)
 
 # 检查摄像头是否成功打开
 if not cap.isOpened():
@@ -74,7 +76,7 @@ while True:
         print("无法读取视频帧")
         break
 
-        # 检测物体
+    # 检测物体轮廓
     objects = detect_objects(frame)
 
     for obj in objects:
