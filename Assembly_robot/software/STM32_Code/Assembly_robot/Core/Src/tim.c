@@ -225,7 +225,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
     PB0     ------> TIM3_CH3
     PB1     ------> TIM3_CH4
     */
-    GPIO_InitStruct.Pin = TIM3_CH1_Pin|TIM3_CH2_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(TIM3_CH1_Port, &GPIO_InitStruct);
