@@ -2,58 +2,58 @@ import cv2
 import numpy as np
 
 #检测目标的轮廓并判断形状
-def detect_objects(frame):
-    # 转换图像为HSV颜色空间
-    hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+# def detect_objects(frame):
+#     # 转换图像为HSV颜色空间
+#     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+#
+#     # 定义颜色范围
+#     lower_red = np.array([0, 100, 100])
+#     upper_red = np.array([10, 255, 255])
+#
+#     lower_blue = np.array([100, 100, 100])
+#     upper_blue = np.array([140, 255, 255])
+#
+#     # 根据颜色范围创建掩模
+#     red_mask = cv2.inRange(hsv_frame, lower_red, upper_red)
+#     blue_mask = cv2.inRange(hsv_frame, lower_blue, upper_blue)
+#
+#     # 使用形态学转换进行过滤
+#     kernel = np.ones((5, 5), np.uint8)
+#     red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_OPEN, kernel)
+#     blue_mask = cv2.morphologyEx(blue_mask, cv2.MORPH_OPEN, kernel)
+#     # 转换图像为灰度
+#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#     # 寻找轮廓
+#     contours, _ = cv2.findContours(red_mask + blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#     # 使用Canny边缘检测算法检测边缘
+#     edges = cv2.Canny(gray, 50, 150)
 
-    # 定义颜色范围
-    lower_red = np.array([0, 100, 100])
-    upper_red = np.array([10, 255, 255])
-
-    lower_blue = np.array([100, 100, 100])
-    upper_blue = np.array([140, 255, 255])
-
-    # 根据颜色范围创建掩模
-    red_mask = cv2.inRange(hsv_frame, lower_red, upper_red)
-    blue_mask = cv2.inRange(hsv_frame, lower_blue, upper_blue)
-
-    # 使用形态学转换进行过滤
-    kernel = np.ones((5, 5), np.uint8)
-    red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_OPEN, kernel)
-    blue_mask = cv2.morphologyEx(blue_mask, cv2.MORPH_OPEN, kernel)
-    # 转换图像为灰度
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # 寻找轮廓
-    contours, _ = cv2.findContours(red_mask + blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    # 使用Canny边缘检测算法检测边缘
-    edges = cv2.Canny(gray, 50, 150)
-
-#判断目标的形状
-def detect_shape(frame):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    for contour in contours:
-        approx = cv2.approxPolyDP(contour, 0.03 * cv2.arcLength(contour, True), True)
-        area = cv2.contourArea(contour)
-        
-        if len(approx) == 3:
-            return 3  # 返回3表示三角形
-        elif len(approx) == 4:
-            # 判断是否是梯形
-            _, _, w, h = cv2.boundingRect(approx)
-            aspect_ratio = float(w) / h
-            if 0.8 < aspect_ratio < 1.2:
-                return 2  # 返回2表示方形
-            else:
-                return 4  # 返回4表示梯形
-        elif len(approx) == 6:
-            return 5  # 返回5表示六边形
-        else:
-            return 1  # 返回1表示圆形
-
-    return 0  # 返回0表示未识别出任何形状
+# #判断目标的形状
+# def detect_shape(frame):
+#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#     _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+#     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#
+#     for contour in contours:
+#         approx = cv2.approxPolyDP(contour, 0.03 * cv2.arcLength(contour, True), True)
+#         area = cv2.contourArea(contour)
+#
+#         if len(approx) == 3:
+#             return 3  # 返回3表示三角形
+#         elif len(approx) == 4:
+#             # 判断是否是梯形
+#             _, _, w, h = cv2.boundingRect(approx)
+#             aspect_ratio = float(w) / h
+#             if 0.8 < aspect_ratio < 1.2:
+#                 return 2  # 返回2表示方形
+#             else:
+#                 return 4  # 返回4表示梯形
+#         elif len(approx) == 6:
+#             return 5  # 返回5表示六边形
+#         else:
+#             return 1  # 返回1表示圆形
+#
+#     return 0  # 返回0表示未识别出任何形状
 
 
 if __name__ == "__main__":
@@ -77,7 +77,7 @@ while True:
         break
 
     # 检测物体轮廓
-    objects = detect_objects(frame)
+    # objects = detect_objects(frame)
 
     for obj in objects:
         shape, color, center = obj
