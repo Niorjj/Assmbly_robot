@@ -24,14 +24,13 @@
 //TIM2
 #define TIM1_CH1_Pin GPIO_Pin_8 //大臂步进舵机
 #define TIM1_CH4_Pin GPIO_Pin_11 //小臂步进舵机
+#define TIM2_CH2_Pin GPIO_Pin_1 //底部旋转舵机
 #define TIM2_CH3_Pin GPIO_Pin_2 //机械爪旋转舵机
 #define TIM2_CH4_Pin GPIO_Pin_3 //机械爪夹取舵机
 //TIM4
 #define TIM4_CH12_Port GPIOB 
-#define TIM4_CH1_Pin GPIO_Pin_6//底部旋转步进电机
 #define TIM4_CH2_Pin GPIO_Pin_7//直线模组步进电机
 //TRANS传送带
-#define TRANS_Port GPIOB //传送带启停端
 #define TRANS_Pin GPIO_Pin_1
 //PLANT装配圆盘
 #define TIM8_CH1_Pin GPIO_Pin_6
