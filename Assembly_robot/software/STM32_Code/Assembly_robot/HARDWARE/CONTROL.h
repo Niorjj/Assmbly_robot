@@ -6,7 +6,7 @@
 #include "main.h"
 //#include "GPIO.h"
 
-void MOTOR_Control1(uint8_t Angle);
+void MOTOR_Control(uint8_t Angle);
 void SERVO_Control1(uint8_t Angle);
 void SERVO_Control2(uint8_t Angle);
 void SERVO_Control3(uint8_t Angle);

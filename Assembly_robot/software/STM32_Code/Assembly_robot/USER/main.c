@@ -1,26 +1,23 @@
 #include "main.h"
-extern uint16_t J1,J2,J3,J4,J5,J6,J7;
-extern uint8_t J8_State;
 
 int main(void)
 {
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	delay_init();
-	LED_Init();
 	Motor_Init();
-	uart_init(115200);
+	USART1_Init(115200);
 	TIM1_PWM_Init(19999, 71); 
   TIM2_PWM_Init(19999, 71); 
-	TIM8_PWM_Init(19999, 71); 
-	
   while(1)
 	{ 
-		SERVO_Control1(J1);
-		SERVO_Control2(J2);
-		SERVO_Control3(J3);
-		SERVO_Control4(J4);
-		MOTOR_Control1(J5);
-		MOTOR_Control2(J6);
-		PLANT_Control(J7);
-		TRANSE_Control(J8_State);
+		//夹取动作
+		TIM_SetCompare3(TIM2,2000); //夹取舵机
+		TIM_SetCompare3(TIM2,1500); 
+		delay_ms(1000);
+		TIM_SetCompare2(TIM2,2100); //底部旋转舵机 
+		TIM_SetCompare4(TIM1,1600); //小臂舵机
+		TIM_SetCompare1(TIM1,500); //大臂舵机
+		TIM_SetCompare4(TIM2,1000); //旋转舵机
+//		TIM_SetCompare3(TIM2,2000); 
 	}
 }
