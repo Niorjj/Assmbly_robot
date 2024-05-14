@@ -2,28 +2,20 @@
 #include "usart.h"	  
 #include "string.h"
 
+#define PACKET_LENGTH 15
+uint8_t RX_Buffer[PACKET_LENGTH];
+uint8_t RX_Index =0;
+uint8_t RX_Flag = 0;
 
-void Send_Byte(uint8_t Data)
+void USART_puts(USART_TypeDef* USARTx, volatile char *s)
 {
-	USART_GetFlagStatus(USART1,USART_FLAG_TC);
-	USART_SendData(USART1,Data);
+    while(*s)
+    {
+        USART_SendData(USARTx, *s);
+        while(USART_GetFlagStatus(USARTx, USART_FLAG_TXE) == RESET); 
+        s++;
+    }
 }
-
-void Send_String(uint8_t *Data)
-{
-	while(*Data)
-		Send_Byte(*Data ++);
-}
-
-void Send_Buff(uint8_t *buf,uint16_t len)
-{
-	uint16_t i;
-	for(i =0;i<len;i++)
-	{
-		Send_Byte(buf[i]);
-	}
-}
-
 void USART1_Init(uint32_t bound)
 {
   GPIO_InitTypeDef GPIO_InitStrue; 
@@ -62,28 +54,61 @@ void USART1_Init(uint32_t bound)
 	NVIC_Init(&NVIC_InitStrue); 
 }
 
-uint8_t RX_Buffer[15];
-uint8_t RX_Index =0;
-uint8_t RX_Flag =0;
+void processPacket(uint8_t *data, uint8_t length)
+{
+		j1 = (uint16_t)RX_Buffer[2];
+		j2 = (uint16_t)RX_Buffer[2];
+		j3 = (uint16_t)RX_Buffer[2];
+		j4 = (uint16_t)RX_Buffer[2];
+    USART_puts(USART1, "Received packet: ");
+    for(int i = 0; i < length; i++)
+    {
+        USART_SendData(USART1, data[i]);
+        while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET); 
+    }
+    USART_puts(USART1, "\r\n");
+}
+
 void USART1_IRQHandler(void)
 {
-//		{
-//        u8 tem = 0;
-//    if( USART_GetITStatus( USART2, USART_IT_RXNE ) != RESET )   //接收中断  接收到一个字节产生一次中断
-//    {
-//        tem = USART_ReceiveData( USART2 );	 //读取数据，可以自动将中断标志位RXNE清零
-//        RX_Buffer[RX_Index++] = tem;	 //存储接收到的数据
-//    }
-//    if( USART_GetITStatus( USART2, USART_IT_IDLE ) != RESET )//空闲中断 接收到一帧数据 产生一次中断
-//    {
-//        tem = USART2->SR;	 //读取SR寄存器
-//        tem = USART2->DR;    //读取DR寄存器 (先读USART_SR，然后读USART_DR可以清除空闲中断标志位IDLE)
-//        copy_data(RX_Buffer,RX_Index);	//备份数据
-//        RX_Flag = 1;						//接收完成标志位置位
-//        RX_Index = 0;	                    //接收数据长度清零
-//    }
-//		}
-//    USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+	 if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) // Check if received data available
+    {
+        uint8_t data = USART_ReceiveData(USART1); // Read the received data
+        
+        if(RX_Flag == 0 && data == 0xAA)
+        {
+            RX_Flag = 1; // Set frame start flag if received byte is frame start marker
+            RX_Index = 0; // Reset buffer index
+        }
+        else if(RX_Flag == 1 && RX_Index < PACKET_LENGTH)
+        {
+            RX_Buffer[RX_Index++] = data; // Store data in buffer
+            
+            if(RX_Index == PACKET_LENGTH)
+            {
+                // Check if the last two bytes are "\r\n"
+                if(RX_Buffer[PACKET_LENGTH - 2] == '\r' && RX_Buffer[PACKET_LENGTH - 1] == '\n')
+                {
+                    // Process received packet here
+                    // Example: call a function to handle the received packet
+                    processPacket(RX_Buffer, PACKET_LENGTH);
+                    RX_Flag = 0; // Reset frame start flag for next packet reception
+                }
+                else
+                {
+                    // Discard incomplete packet and reset buffer
+                    RX_Index = 0;
+                    RX_Flag = 0;
+                }
+            }
+        }
+        else
+        {
+            // Discard data if frame start flag is not set or buffer is full
+        }
+    }
+  USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 }
+
 
 

@@ -19,33 +19,37 @@ void MOTOR_Control(uint8_t Angle)
 	}
 }
 
-void SERVO_Control1(uint8_t Angle) //大臂舵机
+void SERVO_Control1(uint16_t Angle) //大臂舵机
 {
-	uint16_t PWM = (Angle / 180 * 2000 + 500);
+	uint16_t PWM = Angle;
 	TIM_SetCompare1(TIM1,PWM);
 }
 
-void SERVO_Control2(uint8_t Angle) //小臂舵机
+void SERVO_Control2(uint16_t Angle) //小臂舵机
 {
-	uint16_t PWM = (Angle / 180 * 2000 + 500);
+	uint16_t PWM = Angle;
 	TIM_SetCompare4(TIM1,PWM);
 }
 
-void SERVO_Control3(uint8_t Angle) //底部旋转舵机
+void SERVO_Control3(uint16_t Angle) //底部旋转舵机
 {
-	uint16_t PWM = (Angle / 180 * 2000 + 500);
+	uint16_t PWM = (Angle / 90 * 650 + 1450);
 	TIM_SetCompare2(TIM2,PWM);
 }
 
-void SERVO_Control4(uint8_t Angle) //机械爪夹取舵机
+void SERVO_Control4(uint16_t state) //机械爪夹取舵机
 {
-	uint16_t PWM = (Angle / 180 * 2000 + 500);
+	uint16_t PWM;
+	if(state == 0) //闭合
+		PWM = 2000;
+	if(state == 1) //打开
+		PWM = 1500;
 	TIM_SetCompare3(TIM2,PWM);
 }
 
-void SERVO_Control5(uint8_t Angle) //机械爪旋转舵机
+void SERVO_Control5(uint16_t Angle) //机械爪旋转舵机
 {
-	uint16_t PWM = (Angle / 180 * 2000 + 500);
+	uint16_t PWM = (Angle / 45 * 500 + 1000);
 	TIM_SetCompare4(TIM2,PWM);
 }
 

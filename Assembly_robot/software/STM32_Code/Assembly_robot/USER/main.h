@@ -32,6 +32,6 @@
 #define LED_Port GPIOB
 #define LED_Pin GPIO_Pin_13
 
-
+extern uint8_t RX_Flag;
 
 #endif

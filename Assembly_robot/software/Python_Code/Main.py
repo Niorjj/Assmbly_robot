@@ -9,10 +9,12 @@ a0 = 8
 a1 = 12
 a2 = 11
 
-ser = serial.Serial('/dev/ttyAMA0',115200)
+ser = serial.Serial('/dev/ttyAMA0', 115200)
 if not ser.is_open:
     ser.open()
 print(ser.write(b"serial is ready"))
+
+
 def detect_shape_contour(image):
     # 将图像转换为灰度图
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -47,9 +49,9 @@ def detect_shape_contour(image):
 
 def ikinematics(x, y, z):
     theta1 = m.atan2(y, x)
-    theta2 = m.acos((z - a0) / a1)
+    theta2 = m.asin((m.sqrt(x ** 2 + y ** 2) - a2) / a1)
     theta3 = 90 - theta1
-    return [theta1, theta2, theta3]
+    return theta1, theta2, theta3
 
 
 def get_target_shape_contour(image):
@@ -86,8 +88,8 @@ def get_depth_to_target(image, target_center):
 def main():
     cap = cv2.VideoCapture(0)  # 打开摄像头
     while True:
-        ret1, frame = cap.read()
-        if not ret1:
+        ret, frame = cap.read()
+        if not ret:
             break
 
         target_contour, target_center = get_target_shape_contour(frame)
@@ -104,9 +106,6 @@ def main():
             distance = get_depth_to_target(frame, target_center)
             cv2.putText(frame, f"Distance: {distance} pixels", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255),
                         2, cv2.LINE_AA)
-            # cv2.putText(frame, f"Distance: {detected_shapes} pixels", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1,
-            #             (255, 255, 255),
-            #             2, cv2.LINE_AA)
 
         cv2.imshow('Frame', frame)
 
@@ -119,13 +118,19 @@ def main():
 if __name__ == "__main__":
     try:
         while True:
-            main()
-            size = ser.in_waiting
-            if size != 0:
-                ret = ser.read(size)
-                ser.write(b'\xAA')
-                print(ret)
-                ser.flush()
-                time.sleep(0.5)
+            ret1, ret2, ret3 = ikinematics(10, 10, 10)
+            print(ret1)
+            print(ret2)
+            print(ret3)
+            data_to_send = f"{ret1},{ret2},{ret3}\n".encode('utf-8')
+            ser.write(data_to_send)
+        # main()
+        # size = ser.in_waiting
+        # if size != 0:
+        #     ret = ser.read(size)
+        #     ser.write(b'\xAA')
+        #     print(ret)
+        #     ser.flush()
+            time.sleep(0.5)
     except KeyboardInterrupt:
         ser.close()

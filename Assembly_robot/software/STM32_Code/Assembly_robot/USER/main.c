@@ -1,5 +1,9 @@
 #include "main.h"
 
+uint16_t j1 = 0;
+uint16_t j2 = 0;
+uint16_t j3 = 0;
+uint16_t j4 = 0;
 int main(void)
 {
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -10,14 +14,10 @@ int main(void)
   TIM2_PWM_Init(19999, 71); 
   while(1)
 	{ 
-		//夹取动作
-		TIM_SetCompare3(TIM2,2000); //夹取舵机
-		TIM_SetCompare3(TIM2,1500); 
+		SERVO_Control4(0);
 		delay_ms(1000);
-		TIM_SetCompare2(TIM2,2100); //底部旋转舵机 
-		TIM_SetCompare4(TIM1,1600); //小臂舵机
-		TIM_SetCompare1(TIM1,500); //大臂舵机
-		TIM_SetCompare4(TIM2,1000); //旋转舵机
-//		TIM_SetCompare3(TIM2,2000); 
+		SERVO_Control5(0);
+//		SERVO_Control4(1);
+		delay_ms(1000);
 	}
 }

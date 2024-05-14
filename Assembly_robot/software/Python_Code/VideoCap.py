@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
+import objects
 
-#检测目标的轮廓并判断形状
+# 检测目标的轮廓并判断形状
 # def detect_objects(frame):
 #     # 转换图像为HSV颜色空间
 #     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -57,9 +58,8 @@ import numpy as np
 
 
 if __name__ == "__main__":
-# 打开摄像头
+    # 打开摄像头
     cap = cv2.VideoCapture(0)
-
 # 检查摄像头是否成功打开
 if not cap.isOpened():
     print("无法打开摄像头，请检查连接")
