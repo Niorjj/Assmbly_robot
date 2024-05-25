@@ -22,16 +22,16 @@
 #define TIM2_CH2_Pin GPIO_Pin_1 //底部旋转舵机
 #define TIM2_CH3_Pin GPIO_Pin_2 //机械爪旋转舵机
 #define TIM2_CH4_Pin GPIO_Pin_3 //机械爪夹取舵机
-//TRANS传送带
-#define TRANS_Pin GPIO_Pin_1
-//PLANT装配圆盘
-#define PLANT_PUL_Pin GPIO_Pin_6
-#define PLANT_DIR_Pin GPIO_Pin_1 //装配盘DIR
-#define PLANT_EN_Pin GPIO_Pin_15 //装配盘EN
+//TRANS传送带PB14
+#define TRANS_Pin GPIO_Pin_14
+//PLANT装配圆盘PB15 PB10 PB11 
+#define PLANT_PUL_Pin GPIO_Pin_15
+#define PLANT_DIR_Pin GPIO_Pin_10//装配盘DIR
+#define PLANT_EN_Pin GPIO_Pin_11 //装配盘EN
 #define MOTOR_STEP_ANGLE 1.8
+#define lengthpercir 0.4
 #define LED_Port GPIOB
 #define LED_Pin GPIO_Pin_13
 
-extern uint8_t RX_Flag;
 
 #endif

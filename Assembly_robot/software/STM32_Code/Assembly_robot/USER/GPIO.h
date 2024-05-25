@@ -6,5 +6,6 @@
 #include "main.h"
 
 void Motor_Init(void);
+void Plant_Trans_Init(void);
 
 #endif 

@@ -2,10 +2,9 @@
 #include "usart.h"	  
 #include "string.h"
 
-#define PACKET_LENGTH 15
-uint8_t RX_Buffer[PACKET_LENGTH];
+uint8_t RX_Buffer[10];
 uint8_t RX_Index =0;
-uint8_t RX_Flag = 0;
+uint8_t RX_Flag =0;
 
 void USART_puts(USART_TypeDef* USARTx, volatile char *s)
 {
@@ -56,58 +55,55 @@ void USART1_Init(uint32_t bound)
 
 void processPacket(uint8_t *data, uint8_t length)
 {
-		j1 = (uint16_t)RX_Buffer[2];
-		j2 = (uint16_t)RX_Buffer[2];
-		j3 = (uint16_t)RX_Buffer[2];
-		j4 = (uint16_t)RX_Buffer[2];
-    USART_puts(USART1, "Received packet: ");
+		j1 = RX_Buffer[2];
+		j2 = RX_Buffer[3];
+		j3 = RX_Buffer[4];
+		j4_state = RX_Buffer[5];
+	
     for(int i = 0; i < length; i++)
     {
         USART_SendData(USART1, data[i]);
         while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET); 
     }
-    USART_puts(USART1, "\r\n");
 }
 
 void USART1_IRQHandler(void)
 {
-	 if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) // Check if received data available
+   {                  
+	 if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) 
     {
-        uint8_t data = USART_ReceiveData(USART1); // Read the received data
-        
+				static uint8_t RX_Flag =0;
+        uint8_t data = USART_ReceiveData(USART1); 
         if(RX_Flag == 0 && data == 0xAA)
         {
-            RX_Flag = 1; // Set frame start flag if received byte is frame start marker
-            RX_Index = 0; // Reset buffer index
+            RX_Flag = 1;
+            RX_Index = 0;
         }
         else if(RX_Flag == 1 && RX_Index < PACKET_LENGTH)
         {
-            RX_Buffer[RX_Index++] = data; // Store data in buffer
-            
+            RX_Buffer[RX_Index++] = data; // Store data in buffer  
+						USART_puts(USART1, "Received packet: \r\n");				
             if(RX_Index == PACKET_LENGTH)
             {
-                // Check if the last two bytes are "\r\n"
                 if(RX_Buffer[PACKET_LENGTH - 2] == '\r' && RX_Buffer[PACKET_LENGTH - 1] == '\n')
                 {
-                    // Process received packet here
-                    // Example: call a function to handle the received packet
+
                     processPacket(RX_Buffer, PACKET_LENGTH);
-                    RX_Flag = 0; // Reset frame start flag for next packet reception
                 }
                 else
                 {
-                    // Discard incomplete packet and reset buffer
                     RX_Index = 0;
-                    RX_Flag = 0;
                 }
             }
         }
         else
         {
-            // Discard data if frame start flag is not set or buffer is full
+          // Discard data if frame start flag is not set or buffer is full
+					USART_puts(USART1, "Received Faild");	
         }
     }
   USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+	}
 }
 
 

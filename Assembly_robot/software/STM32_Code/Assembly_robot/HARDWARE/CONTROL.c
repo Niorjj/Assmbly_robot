@@ -1,5 +1,4 @@
 #include "CONTROL.h"
-
 void MOTOR_Control(uint8_t Angle)
 {
 	uint16_t n =(uint16_t)Angle / MOTOR_STEP_ANGLE;
@@ -41,7 +40,7 @@ void SERVO_Control4(uint16_t state) //机械爪夹取舵机
 {
 	uint16_t PWM;
 	if(state == 0) //闭合
-		PWM = 2000;
+		PWM = 1900;
 	if(state == 1) //打开
 		PWM = 1500;
 	TIM_SetCompare3(TIM2,PWM);
@@ -55,20 +54,21 @@ void SERVO_Control5(uint16_t Angle) //机械爪旋转舵机
 
 void PLANT_Control(uint8_t Angle) //圆盘角度控制
 {
+	GPIO_SetBits(GPIOB,PLANT_EN_Pin);
 	if(Angle > 0)
 	{
 		uint8_t num =0;
 		num = Angle/MOTOR_STEP_ANGLE;
-		GPIO_SetBits(GPIOA,PLANT_DIR_Pin);
+		GPIO_SetBits(GPIOB,PLANT_DIR_Pin);
 		for(int i=0;i < num;i++)
 		{
-			GPIO_SetBits(GPIOC,PLANT_PUL_Pin);
+			GPIO_SetBits(GPIOB,PLANT_PUL_Pin);
 			delay_ms(1);
-			GPIO_ResetBits(GPIOC,PLANT_PUL_Pin);
+			GPIO_ResetBits(GPIOB,PLANT_PUL_Pin);
 			delay_ms(1);
 		}
 	}else{
-		GPIO_ResetBits(GPIOA,PLANT_DIR_Pin);
+		GPIO_ResetBits(GPIOB,PLANT_DIR_Pin);
 	}
 }
 
@@ -76,11 +76,11 @@ void TRANSE_Control(uint8_t State)
 {
 	if(State == 1)
 	{
-		GPIO_SetBits(GPIOC,TRANS_Pin);
+		GPIO_SetBits(GPIOB,TRANS_Pin);
 	}
 	else if(State == 0)
 	{
-		GPIO_ResetBits(GPIOC,TRANS_Pin);
+		GPIO_ResetBits(GPIOB,TRANS_Pin);
 	}
 }
 
